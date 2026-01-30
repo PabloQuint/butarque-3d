@@ -1,117 +1,110 @@
 <!DOCTYPE html>
-<!-- saved from url=(0068)file:///C:/Users/pablo.quintela/Downloads/butarque_github_pages.html -->
+<!-- saved from url=(0069)file:///C:/Users/pablo.quintela/Downloads/butarque_powerbi_embed.html -->
 <html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Estadio de Butarque 3D</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#0a1628;font-family:Segoe UI,sans-serif;overflow:hidden;width:100vw;height:100vh}
-.scene{width:100%;height:100%;perspective:1000px;display:flex;justify-content:center;align-items:center}
-.stadium{transform-style:preserve-3d;transform:rotateX(55deg) rotateZ(-45deg);position:relative;width:400px;height:300px;transition:transform 0.1s ease-out}
-.field{position:absolute;width:240px;height:160px;background:linear-gradient(90deg,#2d5a27 12.5%,#3a6d32 12.5%,#3a6d32 25%,#2d5a27 25%,#2d5a27 37.5%,#3a6d32 37.5%,#3a6d32 50%,#2d5a27 50%,#2d5a27 62.5%,#3a6d32 62.5%,#3a6d32 75%,#2d5a27 75%,#2d5a27 87.5%,#3a6d32 87.5%);left:80px;top:70px;border:2px solid rgba(255,255,255,0.8);transform:translateZ(0)}
-.s{position:absolute;transform-style:preserve-3d;cursor:pointer;transition:filter 0.2s}
-.s:hover{filter:brightness(1.3) drop-shadow(0 0 10px rgba(255,255,255,0.5))}
+body{background:#0a1628;font-family:Segoe UI,sans-serif;overflow:hidden;width:100%;height:100vh;display:flex;flex-direction:column}
+.header{background:rgba(10,22,40,0.9);padding:8px 15px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.1)}
+.header h1{color:white;font-size:14px;letter-spacing:1px}
+.header span{color:#4fc3f7;font-size:10px}
+.main{flex:1;display:flex;position:relative}
+.scene{flex:1;perspective:800px;display:flex;justify-content:center;align-items:center;min-height:300px}
+.stadium{transform-style:preserve-3d;transform:rotateX(55deg) rotateZ(-45deg);position:relative;width:320px;height:240px;transition:transform 0.1s ease-out}
+.field{position:absolute;width:192px;height:128px;background:linear-gradient(90deg,#2d5a27 12.5%,#3a6d32 12.5%,#3a6d32 25%,#2d5a27 25%,#2d5a27 37.5%,#3a6d32 37.5%,#3a6d32 50%,#2d5a27 50%,#2d5a27 62.5%,#3a6d32 62.5%,#3a6d32 75%,#2d5a27 75%,#2d5a27 87.5%,#3a6d32 87.5%);left:64px;top:56px;border:2px solid rgba(255,255,255,0.8);transform:translateZ(0)}
+.s{position:absolute;transform-style:preserve-3d;cursor:pointer;transition:filter 0.15s}
+.s:hover{filter:brightness(1.4) drop-shadow(0 0 8px rgba(255,255,255,0.6))}
 .s .top{position:absolute;width:100%;height:100%;transform:translateZ(var(--h))}
 .s .front{position:absolute;width:100%;height:var(--h);bottom:0;transform-origin:bottom;transform:rotateX(-90deg);filter:brightness(0.7)}
 .s .right{position:absolute;height:100%;width:var(--h);right:0;transform-origin:right;transform:rotateY(90deg);filter:brightness(0.5)}
 .s .back{position:absolute;width:100%;height:var(--h);top:0;transform-origin:top;transform:rotateX(90deg);filter:brightness(0.6)}
 .s .left{position:absolute;height:100%;width:var(--h);left:0;transform-origin:left;transform:rotateY(-90deg);filter:brightness(0.4)}
-.panel{position:fixed;background:rgba(10,22,40,0.95);border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:15px;color:white;font-size:12px;box-shadow:0 4px 20px rgba(0,0,0,0.3)}
-.title{top:15px;left:50%;transform:translateX(-50%);text-align:center}
-.title h1{font-size:16px;letter-spacing:2px;margin-bottom:3px}
-.title span{color:#4fc3f7;font-size:11px}
-.legend{bottom:15px;left:15px}
-.legend h4{font-size:10px;color:#888;margin-bottom:8px;text-transform:uppercase}
-.gbar{height:14px;width:140px;border-radius:4px;background:linear-gradient(to right,#d32f2f,#ff9800,#ffeb3b,#8bc34a,#4caf50);margin-bottom:5px}
-.glbl{display:flex;justify-content:space-between;font-size:10px;color:#888}
-.info{top:15px;right:15px;min-width:180px}
-.info h3{color:#4fc3f7;margin-bottom:10px;font-size:13px;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:8px}
-.stat{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:11px}
+.sidebar{width:200px;background:rgba(10,22,40,0.95);border-left:1px solid rgba(255,255,255,0.1);padding:12px;color:white;overflow-y:auto}
+.sidebar h3{color:#4fc3f7;font-size:12px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.1)}
+.stat{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:11px}
 .stat-l{color:#888}
-.stat-v{font-weight:600}
+.stat-v{font-weight:600;color:white}
 .hl{color:#4caf50}
-.controls{bottom:15px;right:15px;font-size:10px;color:#666}
-.tooltip{position:fixed;background:rgba(0,0,0,0.9);color:white;padding:10px 14px;border-radius:6px;font-size:11px;pointer-events:none;opacity:0;transition:opacity 0.2s;z-index:1000;border:1px solid rgba(255,255,255,0.2)}
+.legend{margin-top:15px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.1)}
+.legend h4{font-size:10px;color:#888;margin-bottom:6px}
+.gbar{height:10px;width:100%;border-radius:3px;background:linear-gradient(to right,#d32f2f,#ff9800,#ffeb3b,#8bc34a,#4caf50);margin-bottom:4px}
+.glbl{display:flex;justify-content:space-between;font-size:9px;color:#666}
+.help{margin-top:12px;font-size:9px;color:#555}
+.tooltip{position:fixed;background:rgba(0,0,0,0.95);color:white;padding:8px 12px;border-radius:5px;font-size:10px;pointer-events:none;opacity:0;transition:opacity 0.15s;z-index:1000;border:1px solid rgba(79,195,247,0.3);max-width:160px}
 .tooltip.show{opacity:1}
-.tooltip h4{color:#4fc3f7;margin-bottom:5px;font-size:12px}
-.tooltip p{margin:3px 0;color:#ccc}
+.tooltip h4{color:#4fc3f7;margin-bottom:4px;font-size:11px}
+.tooltip p{margin:2px 0;color:#ccc}
 .tooltip .val{color:#4caf50;font-weight:bold}
+.placeholder{color:#666;font-size:11px;text-align:center;padding:20px 0}
 </style>
 </head>
 <body>
-<div class="scene">
-<div class="stadium" id="stadium" style="transform: rotateX(80deg) rotateZ(-55.8deg);">
-<div class="field"></div>
-<div class="s" style="left: 95px; top: 10px; width: 35px; height: 18px; --h: 19.625px;"><div class="top" style="background:#8bc34a"></div><div class="front" style="background:#8bc34a"></div><div class="right" style="background:#8bc34a"></div><div class="back" style="background:#8bc34a"></div><div class="left" style="background:#8bc34a"></div></div><div class="s" style="left: 135px; top: 5px; width: 40px; height: 20px; --h: 20px;"><div class="top" style="background:#4caf50"></div><div class="front" style="background:#4caf50"></div><div class="right" style="background:#4caf50"></div><div class="back" style="background:#4caf50"></div><div class="left" style="background:#4caf50"></div></div><div class="s" style="left: 180px; top: 3px; width: 40px; height: 20px; --h: 20.25px;"><div class="top" style="background:#4caf50"></div><div class="front" style="background:#4caf50"></div><div class="right" style="background:#4caf50"></div><div class="back" style="background:#4caf50"></div><div class="left" style="background:#4caf50"></div></div><div class="s" style="left: 225px; top: 5px; width: 40px; height: 20px; --h: 20.375px;"><div class="top" style="background:#4caf50"></div><div class="front" style="background:#4caf50"></div><div class="right" style="background:#4caf50"></div><div class="back" style="background:#4caf50"></div><div class="left" style="background:#4caf50"></div></div><div class="s" style="left: 270px; top: 10px; width: 35px; height: 18px; --h: 19.375px;"><div class="top" style="background:#8bc34a"></div><div class="front" style="background:#8bc34a"></div><div class="right" style="background:#8bc34a"></div><div class="back" style="background:#8bc34a"></div><div class="left" style="background:#8bc34a"></div></div><div class="s" style="left: 85px; top: -12px; width: 30px; height: 14px; --h: 18.875px;"><div class="top" style="background:#8bc34a"></div><div class="front" style="background:#8bc34a"></div><div class="right" style="background:#8bc34a"></div><div class="back" style="background:#8bc34a"></div><div class="left" style="background:#8bc34a"></div></div><div class="s" style="left: 120px; top: -16px; width: 35px; height: 14px; --h: 19.125px;"><div class="top" style="background:#8bc34a"></div><div class="front" style="background:#8bc34a"></div><div class="right" style="background:#8bc34a"></div><div class="back" style="background:#8bc34a"></div><div class="left" style="background:#8bc34a"></div></div><div class="s" style="left: 160px; top: -18px; width: 40px; height: 15px; --h: 20px;"><div class="top" style="background:#4caf50"></div><div class="front" style="background:#4caf50"></div><div class="right" style="background:#4caf50"></div><div class="back" style="background:#4caf50"></div><div class="left" style="background:#4caf50"></div></div><div class="s" style="left: 205px; top: -18px; width: 40px; height: 15px; --h: 19.75px;"><div class="top" style="background:#8bc34a"></div><div class="front" style="background:#8bc34a"></div><div class="right" style="background:#8bc34a"></div><div class="back" style="background:#8bc34a"></div><div class="left" style="background:#8bc34a"></div></div><div class="s" style="left: 250px; top: -16px; width: 35px; height: 14px; --h: 18.75px;"><div class="top" style="background:#8bc34a"></div><div class="front" style="background:#8bc34a"></div><div class="right" style="background:#8bc34a"></div><div class="back" style="background:#8bc34a"></div><div class="left" style="background:#8bc34a"></div></div><div class="s" style="left: 290px; top: -12px; width: 30px; height: 14px; --h: 18.25px;"><div class="top" style="background:#ffeb3b"></div><div class="front" style="background:#ffeb3b"></div><div class="right" style="background:#ffeb3b"></div><div class="back" style="background:#ffeb3b"></div><div class="left" style="background:#ffeb3b"></div></div><div class="s" style="left: 95px; top: 272px; width: 35px; height: 18px; --h: 19.75px;"><div class="top" style="background:#8bc34a"></div><div class="front" style="background:#8bc34a"></div><div class="right" style="background:#8bc34a"></div><div class="back" style="background:#8bc34a"></div><div class="left" style="background:#8bc34a"></div></div><div class="s" style="left: 95px; top: 292px; width: 35px; height: 15px; --h: 19.5px;"><div class="top" style="background:#8bc34a"></div><div class="front" style="background:#8bc34a"></div><div class="right" style="background:#8bc34a"></div><div class="back" style="background:#8bc34a"></div><div class="left" style="background:#8bc34a"></div></div><div class="s" style="left: 135px; top: 278px; width: 40px; height: 18px; --h: 20px;"><div class="top" style="background:#4caf50"></div><div class="front" style="background:#4caf50"></div><div class="right" style="background:#4caf50"></div><div class="back" style="background:#4caf50"></div><div class="left" style="background:#4caf50"></div></div><div class="s" style="left: 135px; top: 298px; width: 40px; height: 15px; --h: 19.75px;"><div class="top" style="background:#8bc34a"></div><div class="front" style="background:#8bc34a"></div><div class="right" style="background:#8bc34a"></div><div class="back" style="background:#8bc34a"></div><div class="left" style="background:#8bc34a"></div></div><div class="s" style="left: 180px; top: 280px; width: 40px; height: 18px; --h: 20.25px;"><div class="top" style="background:#4caf50"></div><div class="front" style="background:#4caf50"></div><div class="right" style="background:#4caf50"></div><div class="back" style="background:#4caf50"></div><div class="left" style="background:#4caf50"></div></div><div class="s" style="left: 180px; top: 300px; width: 40px; height: 15px; --h: 20.125px;"><div class="top" style="background:#4caf50"></div><div class="front" style="background:#4caf50"></div><div class="right" style="background:#4caf50"></div><div class="back" style="background:#4caf50"></div><div class="left" style="background:#4caf50"></div></div><div class="s" style="left: 225px; top: 278px; width: 40px; height: 18px; --h: 20.375px;"><div class="top" style="background:#4caf50"></div><div class="front" style="background:#4caf50"></div><div class="right" style="background:#4caf50"></div><div class="back" style="background:#4caf50"></div><div class="left" style="background:#4caf50"></div></div><div class="s" style="left: 270px; top: 272px; width: 35px; height: 18px; --h: 19.375px;"><div class="top" style="background:#8bc34a"></div><div class="front" style="background:#8bc34a"></div><div class="right" style="background:#8bc34a"></div><div class="back" style="background:#8bc34a"></div><div class="left" style="background:#8bc34a"></div></div><div class="s" style="left: 30px; top: 70px; width: 18px; height: 30px; --h: 20.5px;"><div class="top" style="background:#4caf50"></div><div class="front" style="background:#4caf50"></div><div class="right" style="background:#4caf50"></div><div class="back" style="background:#4caf50"></div><div class="left" style="background:#4caf50"></div></div><div class="s" style="left: 30px; top: 105px; width: 18px; height: 30px; --h: 20.375px;"><div class="top" style="background:#4caf50"></div><div class="front" style="background:#4caf50"></div><div class="right" style="background:#4caf50"></div><div class="back" style="background:#4caf50"></div><div class="left" style="background:#4caf50"></div></div><div class="s" style="left: 30px; top: 140px; width: 18px; height: 30px; --h: 20.25px;"><div class="top" style="background:#4caf50"></div><div class="front" style="background:#4caf50"></div><div class="right" style="background:#4caf50"></div><div class="back" style="background:#4caf50"></div><div class="left" style="background:#4caf50"></div></div><div class="s" style="left: 30px; top: 175px; width: 18px; height: 28px; --h: 18.375px;"><div class="top" style="background:#ffeb3b"></div><div class="front" style="background:#ffeb3b"></div><div class="right" style="background:#ffeb3b"></div><div class="back" style="background:#ffeb3b"></div><div class="left" style="background:#ffeb3b"></div></div><div class="s" style="left: 30px; top: 208px; width: 18px; height: 28px; --h: 17.875px;"><div class="top" style="background:#ffeb3b"></div><div class="front" style="background:#ffeb3b"></div><div class="right" style="background:#ffeb3b"></div><div class="back" style="background:#ffeb3b"></div><div class="left" style="background:#ffeb3b"></div></div><div class="s" style="left: 10px; top: 175px; width: 16px; height: 28px; --h: 17.625px;"><div class="top" style="background:#ffeb3b"></div><div class="front" style="background:#ffeb3b"></div><div class="right" style="background:#ffeb3b"></div><div class="back" style="background:#ffeb3b"></div><div class="left" style="background:#ffeb3b"></div></div><div class="s" style="left: 10px; top: 208px; width: 16px; height: 28px; --h: 17px;"><div class="top" style="background:#ffeb3b"></div><div class="front" style="background:#ffeb3b"></div><div class="right" style="background:#ffeb3b"></div><div class="back" style="background:#ffeb3b"></div><div class="left" style="background:#ffeb3b"></div></div><div class="s" style="left: 352px; top: 70px; width: 18px; height: 30px; --h: 17.375px;"><div class="top" style="background:#ffeb3b"></div><div class="front" style="background:#ffeb3b"></div><div class="right" style="background:#ffeb3b"></div><div class="back" style="background:#ffeb3b"></div><div class="left" style="background:#ffeb3b"></div></div><div class="s" style="left: 372px; top: 70px; width: 16px; height: 30px; --h: 16.875px;"><div class="top" style="background:#ffeb3b"></div><div class="front" style="background:#ffeb3b"></div><div class="right" style="background:#ffeb3b"></div><div class="back" style="background:#ffeb3b"></div><div class="left" style="background:#ffeb3b"></div></div><div class="s" style="left: 352px; top: 105px; width: 18px; height: 30px; --h: 16.75px;"><div class="top" style="background:#ffeb3b"></div><div class="front" style="background:#ffeb3b"></div><div class="right" style="background:#ffeb3b"></div><div class="back" style="background:#ffeb3b"></div><div class="left" style="background:#ffeb3b"></div></div><div class="s" style="left: 372px; top: 105px; width: 16px; height: 30px; --h: 16.375px;"><div class="top" style="background:#ff9800"></div><div class="front" style="background:#ff9800"></div><div class="right" style="background:#ff9800"></div><div class="back" style="background:#ff9800"></div><div class="left" style="background:#ff9800"></div></div><div class="s" style="left: 352px; top: 140px; width: 18px; height: 30px; --h: 16.25px;"><div class="top" style="background:#ff9800"></div><div class="front" style="background:#ff9800"></div><div class="right" style="background:#ff9800"></div><div class="back" style="background:#ff9800"></div><div class="left" style="background:#ff9800"></div></div><div class="s" style="left: 372px; top: 140px; width: 16px; height: 30px; --h: 15.875px;"><div class="top" style="background:#ff9800"></div><div class="front" style="background:#ff9800"></div><div class="right" style="background:#ff9800"></div><div class="back" style="background:#ff9800"></div><div class="left" style="background:#ff9800"></div></div><div class="s" style="left: 352px; top: 175px; width: 18px; height: 28px; --h: 15.875px;"><div class="top" style="background:#ff9800"></div><div class="front" style="background:#ff9800"></div><div class="right" style="background:#ff9800"></div><div class="back" style="background:#ff9800"></div><div class="left" style="background:#ff9800"></div></div><div class="s" style="left: 372px; top: 175px; width: 16px; height: 28px; --h: 15.125px;"><div class="top" style="background:#ff9800"></div><div class="front" style="background:#ff9800"></div><div class="right" style="background:#ff9800"></div><div class="back" style="background:#ff9800"></div><div class="left" style="background:#ff9800"></div></div><div class="s" style="left: 352px; top: 208px; width: 18px; height: 28px; --h: 15.25px;"><div class="top" style="background:#ff9800"></div><div class="front" style="background:#ff9800"></div><div class="right" style="background:#ff9800"></div><div class="back" style="background:#ff9800"></div><div class="left" style="background:#ff9800"></div></div><div class="s" style="left: 372px; top: 208px; width: 16px; height: 28px; --h: 14.625px;"><div class="top" style="background:#d32f2f"></div><div class="front" style="background:#d32f2f"></div><div class="right" style="background:#d32f2f"></div><div class="back" style="background:#d32f2f"></div><div class="left" style="background:#d32f2f"></div></div></div>
-</div>
-
-<div class="panel title">
+<div class="header">
 <h1>ESTADIO DE BUTARQUE</h1>
-<span>CD Leganés - Ocupación por Sección</span>
+<span>CD Leganés - Ocupación</span>
 </div>
 
-<div class="panel legend">
-<h4>Ocupación</h4>
+<div class="main">
+<div class="scene">
+<div class="stadium" id="stadium">
+<div class="field"></div>
+<div class="s" style="left: 76px; top: 8px; width: 28px; height: 14px; --h: 15.3px;"><div class="top" style="background:#8bc34a"></div><div class="front" style="background:#8bc34a"></div><div class="right" style="background:#8bc34a"></div><div class="back" style="background:#8bc34a"></div><div class="left" style="background:#8bc34a"></div></div><div class="s" style="left: 108px; top: 4px; width: 32px; height: 16px; --h: 15.6px;"><div class="top" style="background:#4caf50"></div><div class="front" style="background:#4caf50"></div><div class="right" style="background:#4caf50"></div><div class="back" style="background:#4caf50"></div><div class="left" style="background:#4caf50"></div></div><div class="s" style="left: 144px; top: 2px; width: 32px; height: 16px; --h: 15.8px;"><div class="top" style="background:#4caf50"></div><div class="front" style="background:#4caf50"></div><div class="right" style="background:#4caf50"></div><div class="back" style="background:#4caf50"></div><div class="left" style="background:#4caf50"></div></div><div class="s" style="left: 180px; top: 4px; width: 32px; height: 16px; --h: 15.9px;"><div class="top" style="background:#4caf50"></div><div class="front" style="background:#4caf50"></div><div class="right" style="background:#4caf50"></div><div class="back" style="background:#4caf50"></div><div class="left" style="background:#4caf50"></div></div><div class="s" style="left: 216px; top: 8px; width: 28px; height: 14px; --h: 15.1px;"><div class="top" style="background:#8bc34a"></div><div class="front" style="background:#8bc34a"></div><div class="right" style="background:#8bc34a"></div><div class="back" style="background:#8bc34a"></div><div class="left" style="background:#8bc34a"></div></div><div class="s" style="left: 68px; top: -10px; width: 24px; height: 11px; --h: 14.7px;"><div class="top" style="background:#8bc34a"></div><div class="front" style="background:#8bc34a"></div><div class="right" style="background:#8bc34a"></div><div class="back" style="background:#8bc34a"></div><div class="left" style="background:#8bc34a"></div></div><div class="s" style="left: 96px; top: -13px; width: 28px; height: 11px; --h: 14.9px;"><div class="top" style="background:#8bc34a"></div><div class="front" style="background:#8bc34a"></div><div class="right" style="background:#8bc34a"></div><div class="back" style="background:#8bc34a"></div><div class="left" style="background:#8bc34a"></div></div><div class="s" style="left: 128px; top: -14px; width: 32px; height: 12px; --h: 15.6px;"><div class="top" style="background:#4caf50"></div><div class="front" style="background:#4caf50"></div><div class="right" style="background:#4caf50"></div><div class="back" style="background:#4caf50"></div><div class="left" style="background:#4caf50"></div></div><div class="s" style="left: 164px; top: -14px; width: 32px; height: 12px; --h: 15.4px;"><div class="top" style="background:#8bc34a"></div><div class="front" style="background:#8bc34a"></div><div class="right" style="background:#8bc34a"></div><div class="back" style="background:#8bc34a"></div><div class="left" style="background:#8bc34a"></div></div><div class="s" style="left: 200px; top: -13px; width: 28px; height: 11px; --h: 14.6px;"><div class="top" style="background:#8bc34a"></div><div class="front" style="background:#8bc34a"></div><div class="right" style="background:#8bc34a"></div><div class="back" style="background:#8bc34a"></div><div class="left" style="background:#8bc34a"></div></div><div class="s" style="left: 232px; top: -10px; width: 24px; height: 11px; --h: 14.2px;"><div class="top" style="background:#ffeb3b"></div><div class="front" style="background:#ffeb3b"></div><div class="right" style="background:#ffeb3b"></div><div class="back" style="background:#ffeb3b"></div><div class="left" style="background:#ffeb3b"></div></div><div class="s" style="left: 76px; top: 218px; width: 28px; height: 14px; --h: 15.4px;"><div class="top" style="background:#8bc34a"></div><div class="front" style="background:#8bc34a"></div><div class="right" style="background:#8bc34a"></div><div class="back" style="background:#8bc34a"></div><div class="left" style="background:#8bc34a"></div></div><div class="s" style="left: 76px; top: 234px; width: 28px; height: 12px; --h: 15.2px;"><div class="top" style="background:#8bc34a"></div><div class="front" style="background:#8bc34a"></div><div class="right" style="background:#8bc34a"></div><div class="back" style="background:#8bc34a"></div><div class="left" style="background:#8bc34a"></div></div><div class="s" style="left: 108px; top: 222px; width: 32px; height: 14px; --h: 15.6px;"><div class="top" style="background:#4caf50"></div><div class="front" style="background:#4caf50"></div><div class="right" style="background:#4caf50"></div><div class="back" style="background:#4caf50"></div><div class="left" style="background:#4caf50"></div></div><div class="s" style="left: 108px; top: 238px; width: 32px; height: 12px; --h: 15.4px;"><div class="top" style="background:#8bc34a"></div><div class="front" style="background:#8bc34a"></div><div class="right" style="background:#8bc34a"></div><div class="back" style="background:#8bc34a"></div><div class="left" style="background:#8bc34a"></div></div><div class="s" style="left: 144px; top: 224px; width: 32px; height: 14px; --h: 15.8px;"><div class="top" style="background:#4caf50"></div><div class="front" style="background:#4caf50"></div><div class="right" style="background:#4caf50"></div><div class="back" style="background:#4caf50"></div><div class="left" style="background:#4caf50"></div></div><div class="s" style="left: 144px; top: 240px; width: 32px; height: 12px; --h: 15.7px;"><div class="top" style="background:#4caf50"></div><div class="front" style="background:#4caf50"></div><div class="right" style="background:#4caf50"></div><div class="back" style="background:#4caf50"></div><div class="left" style="background:#4caf50"></div></div><div class="s" style="left: 180px; top: 222px; width: 32px; height: 14px; --h: 15.9px;"><div class="top" style="background:#4caf50"></div><div class="front" style="background:#4caf50"></div><div class="right" style="background:#4caf50"></div><div class="back" style="background:#4caf50"></div><div class="left" style="background:#4caf50"></div></div><div class="s" style="left: 216px; top: 218px; width: 28px; height: 14px; --h: 15.1px;"><div class="top" style="background:#8bc34a"></div><div class="front" style="background:#8bc34a"></div><div class="right" style="background:#8bc34a"></div><div class="back" style="background:#8bc34a"></div><div class="left" style="background:#8bc34a"></div></div><div class="s" style="left: 24px; top: 56px; width: 14px; height: 24px; --h: 16px;"><div class="top" style="background:#4caf50"></div><div class="front" style="background:#4caf50"></div><div class="right" style="background:#4caf50"></div><div class="back" style="background:#4caf50"></div><div class="left" style="background:#4caf50"></div></div><div class="s" style="left: 24px; top: 84px; width: 14px; height: 24px; --h: 15.9px;"><div class="top" style="background:#4caf50"></div><div class="front" style="background:#4caf50"></div><div class="right" style="background:#4caf50"></div><div class="back" style="background:#4caf50"></div><div class="left" style="background:#4caf50"></div></div><div class="s" style="left: 24px; top: 112px; width: 14px; height: 24px; --h: 15.8px;"><div class="top" style="background:#4caf50"></div><div class="front" style="background:#4caf50"></div><div class="right" style="background:#4caf50"></div><div class="back" style="background:#4caf50"></div><div class="left" style="background:#4caf50"></div></div><div class="s" style="left: 24px; top: 140px; width: 14px; height: 22px; --h: 14.3px;"><div class="top" style="background:#ffeb3b"></div><div class="front" style="background:#ffeb3b"></div><div class="right" style="background:#ffeb3b"></div><div class="back" style="background:#ffeb3b"></div><div class="left" style="background:#ffeb3b"></div></div><div class="s" style="left: 24px; top: 166px; width: 14px; height: 22px; --h: 13.9px;"><div class="top" style="background:#ffeb3b"></div><div class="front" style="background:#ffeb3b"></div><div class="right" style="background:#ffeb3b"></div><div class="back" style="background:#ffeb3b"></div><div class="left" style="background:#ffeb3b"></div></div><div class="s" style="left: 8px; top: 140px; width: 13px; height: 22px; --h: 13.7px;"><div class="top" style="background:#ffeb3b"></div><div class="front" style="background:#ffeb3b"></div><div class="right" style="background:#ffeb3b"></div><div class="back" style="background:#ffeb3b"></div><div class="left" style="background:#ffeb3b"></div></div><div class="s" style="left: 8px; top: 166px; width: 13px; height: 22px; --h: 13.2px;"><div class="top" style="background:#ffeb3b"></div><div class="front" style="background:#ffeb3b"></div><div class="right" style="background:#ffeb3b"></div><div class="back" style="background:#ffeb3b"></div><div class="left" style="background:#ffeb3b"></div></div><div class="s" style="left: 282px; top: 56px; width: 14px; height: 24px; --h: 13.5px;"><div class="top" style="background:#ffeb3b"></div><div class="front" style="background:#ffeb3b"></div><div class="right" style="background:#ffeb3b"></div><div class="back" style="background:#ffeb3b"></div><div class="left" style="background:#ffeb3b"></div></div><div class="s" style="left: 298px; top: 56px; width: 13px; height: 24px; --h: 13.1px;"><div class="top" style="background:#ffeb3b"></div><div class="front" style="background:#ffeb3b"></div><div class="right" style="background:#ffeb3b"></div><div class="back" style="background:#ffeb3b"></div><div class="left" style="background:#ffeb3b"></div></div><div class="s" style="left: 282px; top: 84px; width: 14px; height: 24px; --h: 13px;"><div class="top" style="background:#ffeb3b"></div><div class="front" style="background:#ffeb3b"></div><div class="right" style="background:#ffeb3b"></div><div class="back" style="background:#ffeb3b"></div><div class="left" style="background:#ffeb3b"></div></div><div class="s" style="left: 298px; top: 84px; width: 13px; height: 24px; --h: 12.7px;"><div class="top" style="background:#ff9800"></div><div class="front" style="background:#ff9800"></div><div class="right" style="background:#ff9800"></div><div class="back" style="background:#ff9800"></div><div class="left" style="background:#ff9800"></div></div><div class="s" style="left: 282px; top: 112px; width: 14px; height: 24px; --h: 12.6px;"><div class="top" style="background:#ff9800"></div><div class="front" style="background:#ff9800"></div><div class="right" style="background:#ff9800"></div><div class="back" style="background:#ff9800"></div><div class="left" style="background:#ff9800"></div></div><div class="s" style="left: 298px; top: 112px; width: 13px; height: 24px; --h: 12.3px;"><div class="top" style="background:#ff9800"></div><div class="front" style="background:#ff9800"></div><div class="right" style="background:#ff9800"></div><div class="back" style="background:#ff9800"></div><div class="left" style="background:#ff9800"></div></div><div class="s" style="left: 282px; top: 140px; width: 14px; height: 22px; --h: 12.3px;"><div class="top" style="background:#ff9800"></div><div class="front" style="background:#ff9800"></div><div class="right" style="background:#ff9800"></div><div class="back" style="background:#ff9800"></div><div class="left" style="background:#ff9800"></div></div><div class="s" style="left: 298px; top: 140px; width: 13px; height: 22px; --h: 11.7px;"><div class="top" style="background:#ff9800"></div><div class="front" style="background:#ff9800"></div><div class="right" style="background:#ff9800"></div><div class="back" style="background:#ff9800"></div><div class="left" style="background:#ff9800"></div></div><div class="s" style="left: 282px; top: 166px; width: 14px; height: 22px; --h: 11.8px;"><div class="top" style="background:#ff9800"></div><div class="front" style="background:#ff9800"></div><div class="right" style="background:#ff9800"></div><div class="back" style="background:#ff9800"></div><div class="left" style="background:#ff9800"></div></div><div class="s" style="left: 298px; top: 166px; width: 13px; height: 22px; --h: 11.3px;"><div class="top" style="background:#d32f2f"></div><div class="front" style="background:#d32f2f"></div><div class="right" style="background:#d32f2f"></div><div class="back" style="background:#d32f2f"></div><div class="left" style="background:#d32f2f"></div></div></div>
+</div>
+
+<div class="sidebar">
+<h3 id="secName">Selecciona sección</h3>
+<div id="secInfo"><p class="placeholder">Clic en cualquier sección para ver detalles</p></div>
+<div class="legend">
+<h4>OCUPACIÓN</h4>
 <div class="gbar"></div>
 <div class="glbl"><span>0%</span><span>50%</span><span>100%</span></div>
 </div>
-
-<div class="panel info">
-<h3 id="secName">Selecciona una sección</h3>
-<div id="secInfo"><p style="color:#666">Haz clic en cualquier sección</p></div>
+<div class="help">🖱️ Arrastrar para rotar</div>
+</div>
 </div>
 
-<div class="panel controls">
-<p>🖱️ Arrastrar: rotar</p>
-<p>📱 Touch: rotar</p>
-</div>
-
-<div class="tooltip" id="tooltip" style="left: 807px; top: 441px;"><h4>TB3</h4><p>Zona: Tribuna Norte</p><p>Ocupación: <span class="val">86%</span></p><p>Abonados: 300/350</p></div>
+<div class="tooltip" id="tooltip"></div>
 
 <script>
 var DATA = [
-    // Tribuna Norte - Fila TA (VIP)
-    {id:"TA",zona:"Tribuna Norte",x:95,y:10,w:35,h:18,cap:450,abon:420,ocup:93,precio:450},
-    {id:"TAC",zona:"Tribuna Norte",x:135,y:5,w:40,h:20,cap:550,abon:530,ocup:96,precio:550},
-    {id:"TAC-2",zona:"Tribuna Norte",x:180,y:3,w:40,h:20,cap:550,abon:540,ocup:98,precio:550},
-    {id:"TAC-3",zona:"Tribuna Norte",x:225,y:5,w:40,h:20,cap:600,abon:595,ocup:99,precio:600},
-    {id:"TA-2",zona:"Tribuna Norte",x:270,y:10,w:35,h:18,cap:450,abon:410,ocup:91,precio:450},
-    // Tribuna Norte - Fila TB
-    {id:"TB1",zona:"Tribuna Norte",x:85,y:-12,w:30,h:14,cap:300,abon:260,ocup:87,precio:320},
-    {id:"TB2",zona:"Tribuna Norte",x:120,y:-16,w:35,h:14,cap:350,abon:310,ocup:89,precio:320},
-    {id:"TBC",zona:"Tribuna Norte",x:160,y:-18,w:40,h:15,cap:400,abon:385,ocup:96,precio:350},
-    {id:"TBC-2",zona:"Tribuna Norte",x:205,y:-18,w:40,h:15,cap:400,abon:375,ocup:94,precio:350},
-    {id:"TB3",zona:"Tribuna Norte",x:250,y:-16,w:35,h:14,cap:350,abon:300,ocup:86,precio:320},
-    {id:"TB4",zona:"Tribuna Norte",x:290,y:-12,w:30,h:14,cap:300,abon:245,ocup:82,precio:320},
-    // Tribuna Sur
-    {id:"L1A",zona:"Tribuna Sur",x:95,y:272,w:35,h:18,cap:400,abon:375,ocup:94,precio:420},
-    {id:"L1B",zona:"Tribuna Sur",x:95,y:292,w:35,h:15,cap:380,abon:350,ocup:92,precio:400},
-    {id:"L2A",zona:"Tribuna Sur",x:135,y:278,w:40,h:18,cap:450,abon:430,ocup:96,precio:420},
-    {id:"L2B",zona:"Tribuna Sur",x:135,y:298,w:40,h:15,cap:420,abon:395,ocup:94,precio:400},
-    {id:"LCA",zona:"Tribuna Sur",x:180,y:280,w:40,h:18,cap:500,abon:490,ocup:98,precio:500},
-    {id:"LCB",zona:"Tribuna Sur",x:180,y:300,w:40,h:15,cap:480,abon:465,ocup:97,precio:480},
-    {id:"LCA-2",zona:"Tribuna Sur",x:225,y:278,w:40,h:18,cap:500,abon:495,ocup:99,precio:500},
-    {id:"L3A",zona:"Tribuna Sur",x:270,y:272,w:35,h:18,cap:450,abon:410,ocup:91,precio:420},
-    // Fondo Oeste - Animación
-    {id:"GDA",zona:"Fondo Oeste",x:30,y:70,w:18,h:30,cap:500,abon:498,ocup:100,precio:200},
-    {id:"GDA-2",zona:"Fondo Oeste",x:30,y:105,w:18,h:30,cap:500,abon:495,ocup:99,precio:200},
-    {id:"GDA-3",zona:"Fondo Oeste",x:30,y:140,w:18,h:30,cap:500,abon:490,ocup:98,precio:200},
-    {id:"FN3A",zona:"Fondo Oeste",x:30,y:175,w:18,h:28,cap:350,abon:290,ocup:83,precio:250},
-    {id:"FN4A",zona:"Fondo Oeste",x:30,y:208,w:18,h:28,cap:350,abon:275,ocup:79,precio:250},
-    {id:"FN5A",zona:"Fondo Oeste",x:10,y:175,w:16,h:28,cap:300,abon:230,ocup:77,precio:230},
-    {id:"FN5B",zona:"Fondo Oeste",x:10,y:208,w:16,h:28,cap:300,abon:215,ocup:72,precio:230},
-    // Fondo Este
-    {id:"FS2A",zona:"Fondo Este",x:352,y:70,w:18,h:30,cap:400,abon:300,ocup:75,precio:280},
-    {id:"FS2B",zona:"Fondo Este",x:372,y:70,w:16,h:30,cap:350,abon:250,ocup:71,precio:260},
-    {id:"FS3A",zona:"Fondo Este",x:352,y:105,w:18,h:30,cap:400,abon:280,ocup:70,precio:280},
-    {id:"FS3B",zona:"Fondo Este",x:372,y:105,w:16,h:30,cap:350,abon:235,ocup:67,precio:260},
-    {id:"FS4A",zona:"Fondo Este",x:352,y:140,w:18,h:30,cap:400,abon:265,ocup:66,precio:280},
-    {id:"FS4B",zona:"Fondo Este",x:372,y:140,w:16,h:30,cap:350,abon:220,ocup:63,precio:260},
-    {id:"FS5A",zona:"Fondo Este",x:352,y:175,w:18,h:28,cap:400,abon:250,ocup:63,precio:280},
-    {id:"FS5B",zona:"Fondo Este",x:372,y:175,w:16,h:28,cap:350,abon:200,ocup:57,precio:260},
-    {id:"FS6A",zona:"Fondo Este",x:352,y:208,w:18,h:28,cap:380,abon:220,ocup:58,precio:280},
-    {id:"FS6B",zona:"Fondo Este",x:372,y:208,w:16,h:28,cap:320,abon:170,ocup:53,precio:260}
+    {id:"TA",zona:"Tribuna Norte",x:76,y:8,w:28,h:14,cap:450,abon:420,ocup:93,precio:450},
+    {id:"TAC",zona:"Tribuna Norte",x:108,y:4,w:32,h:16,cap:550,abon:530,ocup:96,precio:550},
+    {id:"TAC-2",zona:"Tribuna Norte",x:144,y:2,w:32,h:16,cap:550,abon:540,ocup:98,precio:550},
+    {id:"TAC-3",zona:"Tribuna Norte",x:180,y:4,w:32,h:16,cap:600,abon:595,ocup:99,precio:600},
+    {id:"TA-2",zona:"Tribuna Norte",x:216,y:8,w:28,h:14,cap:450,abon:410,ocup:91,precio:450},
+    {id:"TB1",zona:"Tribuna Norte",x:68,y:-10,w:24,h:11,cap:300,abon:260,ocup:87,precio:320},
+    {id:"TB2",zona:"Tribuna Norte",x:96,y:-13,w:28,h:11,cap:350,abon:310,ocup:89,precio:320},
+    {id:"TBC",zona:"Tribuna Norte",x:128,y:-14,w:32,h:12,cap:400,abon:385,ocup:96,precio:350},
+    {id:"TBC-2",zona:"Tribuna Norte",x:164,y:-14,w:32,h:12,cap:400,abon:375,ocup:94,precio:350},
+    {id:"TB3",zona:"Tribuna Norte",x:200,y:-13,w:28,h:11,cap:350,abon:300,ocup:86,precio:320},
+    {id:"TB4",zona:"Tribuna Norte",x:232,y:-10,w:24,h:11,cap:300,abon:245,ocup:82,precio:320},
+    {id:"L1A",zona:"Tribuna Sur",x:76,y:218,w:28,h:14,cap:400,abon:375,ocup:94,precio:420},
+    {id:"L1B",zona:"Tribuna Sur",x:76,y:234,w:28,h:12,cap:380,abon:350,ocup:92,precio:400},
+    {id:"L2A",zona:"Tribuna Sur",x:108,y:222,w:32,h:14,cap:450,abon:430,ocup:96,precio:420},
+    {id:"L2B",zona:"Tribuna Sur",x:108,y:238,w:32,h:12,cap:420,abon:395,ocup:94,precio:400},
+    {id:"LCA",zona:"Tribuna Sur",x:144,y:224,w:32,h:14,cap:500,abon:490,ocup:98,precio:500},
+    {id:"LCB",zona:"Tribuna Sur",x:144,y:240,w:32,h:12,cap:480,abon:465,ocup:97,precio:480},
+    {id:"LCA-2",zona:"Tribuna Sur",x:180,y:222,w:32,h:14,cap:500,abon:495,ocup:99,precio:500},
+    {id:"L3A",zona:"Tribuna Sur",x:216,y:218,w:28,h:14,cap:450,abon:410,ocup:91,precio:420},
+    {id:"GDA",zona:"Fondo Oeste",x:24,y:56,w:14,h:24,cap:500,abon:498,ocup:100,precio:200},
+    {id:"GDA-2",zona:"Fondo Oeste",x:24,y:84,w:14,h:24,cap:500,abon:495,ocup:99,precio:200},
+    {id:"GDA-3",zona:"Fondo Oeste",x:24,y:112,w:14,h:24,cap:500,abon:490,ocup:98,precio:200},
+    {id:"FN3A",zona:"Fondo Oeste",x:24,y:140,w:14,h:22,cap:350,abon:290,ocup:83,precio:250},
+    {id:"FN4A",zona:"Fondo Oeste",x:24,y:166,w:14,h:22,cap:350,abon:275,ocup:79,precio:250},
+    {id:"FN5A",zona:"Fondo Oeste",x:8,y:140,w:13,h:22,cap:300,abon:230,ocup:77,precio:230},
+    {id:"FN5B",zona:"Fondo Oeste",x:8,y:166,w:13,h:22,cap:300,abon:215,ocup:72,precio:230},
+    {id:"FS2A",zona:"Fondo Este",x:282,y:56,w:14,h:24,cap:400,abon:300,ocup:75,precio:280},
+    {id:"FS2B",zona:"Fondo Este",x:298,y:56,w:13,h:24,cap:350,abon:250,ocup:71,precio:260},
+    {id:"FS3A",zona:"Fondo Este",x:282,y:84,w:14,h:24,cap:400,abon:280,ocup:70,precio:280},
+    {id:"FS3B",zona:"Fondo Este",x:298,y:84,w:13,h:24,cap:350,abon:235,ocup:67,precio:260},
+    {id:"FS4A",zona:"Fondo Este",x:282,y:112,w:14,h:24,cap:400,abon:265,ocup:66,precio:280},
+    {id:"FS4B",zona:"Fondo Este",x:298,y:112,w:13,h:24,cap:350,abon:220,ocup:63,precio:260},
+    {id:"FS5A",zona:"Fondo Este",x:282,y:140,w:14,h:22,cap:400,abon:250,ocup:63,precio:280},
+    {id:"FS5B",zona:"Fondo Este",x:298,y:140,w:13,h:22,cap:350,abon:200,ocup:57,precio:260},
+    {id:"FS6A",zona:"Fondo Este",x:282,y:166,w:14,h:22,cap:380,abon:220,ocup:58,precio:280},
+    {id:"FS6B",zona:"Fondo Este",x:298,y:166,w:13,h:22,cap:320,abon:170,ocup:53,precio:260}
 ];
 
 function getColor(o) {
@@ -125,10 +118,9 @@ function getColor(o) {
 var stadium = document.getElementById("stadium");
 var tooltip = document.getElementById("tooltip");
 
-// Crear secciones
-DATA.forEach(function(s, i) {
+DATA.forEach(function(s) {
     var col = getColor(s.ocup);
-    var ht = 8 + (s.ocup / 8);
+    var ht = 6 + (s.ocup / 10);
     
     var el = document.createElement("div");
     el.className = "s";
@@ -139,89 +131,71 @@ DATA.forEach(function(s, i) {
                    '<div class="back" style="background:' + col + '"></div>' +
                    '<div class="left" style="background:' + col + '"></div>';
     
-    // Tooltip en hover
     el.onmouseenter = function(e) {
-        tooltip.innerHTML = '<h4>' + s.id + '</h4>' +
-                           '<p>Zona: ' + s.zona + '</p>' +
-                           '<p>Ocupación: <span class="val">' + s.ocup + '%</span></p>' +
-                           '<p>Abonados: ' + s.abon + '/' + s.cap + '</p>';
+        tooltip.innerHTML = '<h4>' + s.id + '</h4><p>' + s.zona + '</p><p>Ocupación: <span class="val">' + s.ocup + '%</span></p>';
         tooltip.classList.add("show");
     };
     
     el.onmousemove = function(e) {
-        tooltip.style.left = (e.clientX + 15) + "px";
-        tooltip.style.top = (e.clientY + 15) + "px";
+        tooltip.style.left = (e.clientX + 12) + "px";
+        tooltip.style.top = (e.clientY + 12) + "px";
     };
     
     el.onmouseleave = function() {
         tooltip.classList.remove("show");
     };
     
-    // Click para panel info
     el.onclick = function() {
-        document.getElementById("secName").textContent = s.id + " - " + s.zona;
+        document.getElementById("secName").textContent = s.id;
         document.getElementById("secInfo").innerHTML = 
+            '<div class="stat"><span class="stat-l">Zona</span><span class="stat-v">' + s.zona + '</span></div>' +
             '<div class="stat"><span class="stat-l">Capacidad</span><span class="stat-v">' + s.cap.toLocaleString() + '</span></div>' +
             '<div class="stat"><span class="stat-l">Abonados</span><span class="stat-v">' + s.abon.toLocaleString() + '</span></div>' +
             '<div class="stat"><span class="stat-l">Ocupación</span><span class="stat-v hl">' + s.ocup + '%</span></div>' +
-            '<div class="stat"><span class="stat-l">Precio abono</span><span class="stat-v">' + s.precio + '€</span></div>';
+            '<div class="stat"><span class="stat-l">Precio</span><span class="stat-v">' + s.precio + '€</span></div>';
     };
     
     stadium.appendChild(el);
 });
 
-// Rotación con mouse
-var isDragging = false;
-var prevX = 0, prevY = 0;
-var rotX = 55, rotZ = -45;
+var isDragging = false, prevX = 0, prevY = 0, rotX = 55, rotZ = -45;
 
 document.addEventListener("mousedown", function(e) {
+    if (e.target.closest(".sidebar")) return;
     isDragging = true;
     prevX = e.clientX;
     prevY = e.clientY;
 });
 
-document.addEventListener("mouseup", function() {
-    isDragging = false;
-});
+document.addEventListener("mouseup", function() { isDragging = false; });
 
 document.addEventListener("mousemove", function(e) {
     if (!isDragging) return;
-    rotZ += (e.clientX - prevX) * 0.4;
-    rotX -= (e.clientY - prevY) * 0.4;
+    rotZ += (e.clientX - prevX) * 0.5;
+    rotX -= (e.clientY - prevY) * 0.5;
     rotX = Math.max(20, Math.min(80, rotX));
     stadium.style.transform = "rotateX(" + rotX + "deg) rotateZ(" + rotZ + "deg)";
     prevX = e.clientX;
     prevY = e.clientY;
 });
 
-// Touch support
 document.addEventListener("touchstart", function(e) {
+    if (e.target.closest(".sidebar")) return;
     isDragging = true;
     prevX = e.touches[0].clientX;
     prevY = e.touches[0].clientY;
 });
 
-document.addEventListener("touchend", function() {
-    isDragging = false;
-});
+document.addEventListener("touchend", function() { isDragging = false; });
 
 document.addEventListener("touchmove", function(e) {
     if (!isDragging) return;
-    rotZ += (e.touches[0].clientX - prevX) * 0.4;
-    rotX -= (e.touches[0].clientY - prevY) * 0.4;
+    rotZ += (e.touches[0].clientX - prevX) * 0.5;
+    rotX -= (e.touches[0].clientY - prevY) * 0.5;
     rotX = Math.max(20, Math.min(80, rotX));
     stadium.style.transform = "rotateX(" + rotX + "deg) rotateZ(" + rotZ + "deg)";
     prevX = e.touches[0].clientX;
     prevY = e.touches[0].clientY;
-});
-
-// Calcular totales
-var totalCap = 0, totalAbon = 0, sumOcup = 0;
-DATA.forEach(function(s) {
-    totalCap += s.cap;
-    totalAbon += s.abon;
-    sumOcup += s.ocup;
 });
 </script>
 
